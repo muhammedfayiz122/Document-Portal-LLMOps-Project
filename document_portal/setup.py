@@ -1,8 +1,20 @@
 from setuptools import setup, find_packages
-import os
+from typing import List
 
 with open("README.md", "r", encoding="utf-8") as file:
     long_description = file.read()
+
+def get_requirements(file_path:str) -> List:
+    """
+    To get all requirement 
+    """
+    requirements = []
+    with open(file_path, "r", encoding="utf-8") as file:
+        requirements = file.readlines()
+        requirements = [req.strip() for req in requirements]
+        if '-e .' in requirements:
+            requirements.remove('-e .')
+    return requirements
 
 setup(
     name="document_portal",
@@ -14,7 +26,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/muhammedfayiz122/LLMOPS-Tutorials/tree/main/document_portal",
     packages=find_packages(),
-    install_requires=open("requirements.txt").read().splitlines() if os.path.exists("requirements.txt") else [],
+    install_requires=get_requirements("requirements.txt"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
