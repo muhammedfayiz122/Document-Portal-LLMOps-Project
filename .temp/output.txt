@@ -1,0 +1,39 @@
+document_portal
+├── LICENSE
+├── README.md
+├── document_portal
+│   ├── config
+│   │   ├── __init__.py
+│   │   └── config.yaml
+│   ├── data
+│   │   ├── experiments (1).ipynb
+│   │   ├── experiments.ipynb
+│   │   └── sample.pdf
+│   ├── exception
+│   │   ├── __init__.py
+│   │   └── custom_exception.py
+│   ├── logger
+│   │   ├── __init__.py
+│   │   └── custom_logger.py
+│   ├── notebook
+│   │   ├── experiments.ipynb
+│   │   ├── logs
+│   │   ├── rag_pipeline.ipynb
+│   │   ├── temp.py
+│   │   └── temp2.py
+│   ├── prompts
+│   │   ├── __init__.py
+│   │   └── prompt_library.py
+│   ├── src
+│   │   ├── __init__.py
+│   │   ├── doc_analyser
+│   │   ├── doc_compare
+│   │   ├── multi_doc_chat
+│   │   └── single_doc_chat
+│   ├── static
+│   ├── templates
+│   └── utils
+│       ├── __init__.py
+│       └── config_loader.py
+├── requirements.txt
+└── setup.py
