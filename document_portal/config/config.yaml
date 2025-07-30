@@ -1,1 +1,10 @@
-ECHO is on.
+logger:
+  log_dir: "logs"
+  log_level: "DEBUG"
+  log_max_bytes: 5242880      # 5 MB
+  log_backup_count: 50
+
+  file_format: "[%(asctime)s] %(levelname)s: %(message)s"
+  console_format: "%(log_color)s[%(asctime)s] [%(levelname)s] [%(filename)s:%(lineno)d] - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  
