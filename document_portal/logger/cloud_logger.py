@@ -10,14 +10,18 @@ class CustomLogger():
         # Loading configurations  
         config = load_config("cloud_logger")
         
-        self.file_handler_level = config['file_handler']['level'].upper()
+        self.file_level = config['file_handler']['level'].upper()
         self.file_format = config['file_handler']['format']
         
-        self.console_handler_level = config['console_handler']['level'].upper()
+        self.console_level = config['console_handler']['level'].upper()
         self.console_format = config['console_handler']['format']
         
+        
+        self.config_level = config['basic_config']['level'].upper()
+        self.config_format = config['basic_config']['format']
+        
         self.log_max_bytes = config['log_max_bytes'] 
-        self.log_backup_counts = config['log_backup_counts']
+        self.log_backup_counts = config['log_backup_count']
         self.date_format = config['date_format']
         
         # Ensure logs directory exists
@@ -41,7 +45,7 @@ class CustomLogger():
             # Add lines for customization
         )
         file_handler.setFormatter(file_formatter)
-        file_handler.setLevel(self.file_handler_level)
+        file_handler.setLevel(self.file_level)
         
         # <--- Console Handler --->
         console_handler = logging.StreamHandler()
@@ -49,12 +53,30 @@ class CustomLogger():
             self.console_format
         )
         console_handler.setFormatter(console_formatter)
-        console_handler.setLevel(self.console_handler_level)
+        console_handler.setLevel(self.console_level)
         
         logging.basicConfig(
-            
+            level=self.config_level,
+            format=self.config_format,
+            handlers=[console_handler, file_handler]
         )
         
+        # Configure structlog for JSON structured logging
+        structlog.configure(
+            processors=[
+                structlog.processors.TimeStamper(fmt="iso", utc=True, key="timestamp"),
+                structlog.processors.add_log_level,
+                structlog.processors.EventRenamer(to="event"),
+                structlog.processors.JSONRenderer()
+            ],
+            logger_factory=structlog.stdlib.LoggerFactory(),
+            cache_logger_on_first_use=True
+        )
+
+        return structlog.get_logger(logger_name)
         
-        
-        
+# --- Usage Example ---
+if __name__ == "__main__":
+    logger = CustomLogger().get_logger(__file__)
+    logger.info("User uploaded a file", user_id=123, filename="report.pdf")
+    logger.error("Failed to process PDF", error="File not found", user_id=123)
