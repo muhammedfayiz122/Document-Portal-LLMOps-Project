@@ -12,7 +12,7 @@ except ImportError:
 
 class CustomLogger():
     def __init__(self) -> None:
-        config = load_config("logger")
+        config = load_config("dev_logger")
         self.log_level = config['log_level'].upper()
         self.log_max_bytes = config['log_max_bytes'] 
         self.log_backup_counts = config['log_backup_counts']
