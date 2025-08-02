@@ -12,10 +12,28 @@ class DocumentComparatorLLM:
     Handles LLM operations for document comparison
     """
     def __init__(self) -> None:
-        pass
-    
+        load_dotenv()
+        self.logger = CustomLogger().get_logger(__file__)
+        self.loader = ModelLoader()
+        self.llm = self.loader.load_llm()
+        self.parser = JsonOutputParser()
+        self.fixing_parser = OutputFixingParser()
+        self.prompt = PROMPT_REGISTERY["document_comparison"]
+        self.chain = self.prompt | self.llm | self.parser | self.fixing_parser
+        self.logger.info("DocumentComparatorLLM initialized")
+
     def compare_documents(self):
-        pass
+        """Compares two documents using LLM"""
+        try:
+            pass
+        except Exception as e:
+            self.logger.error(f"Error in document comparison: {e}")
+            raise DocumentPortalException("Failed to compare documents") from e
 
     def _format_response(self):
-        pass
+        """Formats the response from the LLM"""
+        try:
+            pass
+        except Exception as e:
+            self.logger.error(f"Error formatting response: {e}")
+            raise DocumentPortalException("Failed to format response") from e
