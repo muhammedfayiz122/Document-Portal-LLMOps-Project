@@ -4,7 +4,7 @@ import pandas as pd
 from document_portal.logger.cloud_logger import CustomLogger
 from document_portal.exception.custom_exception import DocumentPortalException
 from document_portal.model.models import *
-# from document_portal.prompts.prompt_library import PROMPT_REGISTRY
+from document_portal.prompts.prompt_library import PROMPT_REGISTRY
 from langchain_core.output_parsers import JsonOutputParser
 
 class DocumentComparatorLLM:
