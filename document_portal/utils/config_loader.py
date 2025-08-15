@@ -3,24 +3,11 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Absolute path to the package root directory
-PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+load_dotenv()
 
-# Absolute path to the top-level project directory
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-
-# Absolute path to the config directory
-CONFIG_PATH = PACKAGE_ROOT / "config" / "config.yaml"
-
-# Loading environment variables from .env file if it exists
-env_path = PROJECT_ROOT.parent / ".env"
-if env_path.exists():
-    load_dotenv(dotenv_path=env_path)
-os.environ["PROJECT_ROOT"] = str(PROJECT_ROOT)
-
-def get_project_root() -> Path:
-    """Returns the root directory of the project."""
-    return PROJECT_ROOT
+def _package_root() -> Path:
+    """Returns the root directory of the package."""
+    return Path(__file__).resolve().parents[1]
 
 def load_config(item: str="", config_path: str | Path | None = None) -> dict:
     """
@@ -37,18 +24,18 @@ def load_config(item: str="", config_path: str | Path | None = None) -> dict:
     """
     env_config_path = os.getenv("CONFIG_PATH")
     if config_path is None:
-        config_path = env_config_path or str(CONFIG_PATH)
+        config_path = env_config_path or (_package_root() / "config" / "config.yaml")
     
-    config_path = Path(config_path)
-    if not config_path.is_absolute():
-        config_path = PACKAGE_ROOT / config_path
+    path = Path(config_path)
+    if not path.is_absolute():
+        path = _package_root() / config_path
         
-    if not config_path.exists():
-        raise FileNotFoundError(f"Config file not found at {config_path}")
+    if not path.exists():
+        raise FileNotFoundError(f"Config file not found at {path}")
     
-    with open(config_path, 'r', encoding='utf-8') as file:
+    with open(path, 'r', encoding='utf-8') as file:
         try:
             config = yaml.safe_load(file)
             return config.get(item, config) if item else config
         except yaml.YAMLError as e:
-            raise yaml.YAMLError(f"Error parsing YAML file at {config_path}: {e}")
+            raise yaml.YAMLError(f"Error parsing YAML file at {path}: {e}")
