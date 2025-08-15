@@ -38,6 +38,6 @@ setup(
             "rag-project=document_portal.app:cli"
         ]
     },
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     license="MIT",
 )
