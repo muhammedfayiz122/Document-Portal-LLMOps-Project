@@ -2,4 +2,7 @@
     // "terminal.integrated.cwd": "Assignment6/",
     "python.defaultInterpreterPath": "C:/Users/muham/Desktop/document_portal/venv/Scripts/python.exe",
     "postman.settings.dotenv-detection-notification-visibility": false,
+    "cSpell.words": [
+        "faiss"
+    ],
 }
